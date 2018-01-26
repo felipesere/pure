@@ -108,8 +108,8 @@ prompt_pure_preprompt_render() {
 	# Initialize the preprompt array.
 	local -a preprompt_parts
 
-	# Set the path.
-	preprompt_parts+=('%F{blue}%~%f')
+	# Set the path with shrink
+  preprompt_parts+=('%F{blue}$(shrink_path -f)%f')
 
 	# Add git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
