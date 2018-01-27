@@ -96,6 +96,9 @@ prompt_pure_preprompt_render() {
 	# Set the path with shrink
   preprompt_parts+=('%F{magenta}$(shrink_path -f)%f')
 
+  # Add the jobs marker
+  preprompt_parts+=('%(1j.‼️ .)')
+
 	# Add git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
 	if [[ -n $prompt_pure_vcs_info[branch] ]]; then
