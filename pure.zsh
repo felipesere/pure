@@ -90,21 +90,16 @@ prompt_pure_string_length_to_var() {
 prompt_pure_preprompt_render() {
 	setopt localoptions noshwordsplit
 
-	# Set color for git branch/dirty status, change color if dirty checking has
-	# been delayed.
-	local git_color=242
-	[[ -n ${prompt_pure_git_last_dirty_check_timestamp+x} ]] && git_color=red
-
 	# Initialize the preprompt array.
 	local -a preprompt_parts
 
 	# Set the path with shrink
-  preprompt_parts+=('%F{blue}$(shrink_path -f)%f')
+  preprompt_parts+=('%F{magenta}$(shrink_path -f)%f')
 
 	# Add git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
 	if [[ -n $prompt_pure_vcs_info[branch] ]]; then
-		preprompt_parts+=("%F{$git_color}"'${prompt_pure_vcs_info[branch]}${prompt_pure_git_dirty}%f')
+		preprompt_parts+=("%F{blue}"'${prompt_pure_vcs_info[branch]}${prompt_pure_git_dirty}%f')
 	fi
 	# Git pull/push arrows.
 	if [[ -n $prompt_pure_git_arrows ]]; then
