@@ -42,16 +42,6 @@ prompt_pure_human_time_to_var() {
 	typeset -g "${var}"="${human}"
 }
 
-# stores (into prompt_pure_cmd_exec_time) the exec time of the last command if set threshold was exceeded
-prompt_pure_check_cmd_exec_time() {
-	integer elapsed
-	(( elapsed = EPOCHSECONDS - ${prompt_pure_cmd_timestamp:-$EPOCHSECONDS} ))
-	typeset -g prompt_pure_cmd_exec_time=
-	(( elapsed > ${PURE_CMD_MAX_EXEC_TIME:-5} )) && {
-		prompt_pure_human_time_to_var $elapsed "prompt_pure_cmd_exec_time"
-	}
-}
-
 prompt_pure_set_title() {
 	# emacs terminal does not support settings the title
 	(( ${+EMACS} )) && return
@@ -160,7 +150,6 @@ prompt_pure_preprompt_render() {
 
 prompt_pure_precmd() {
 	# check exec time and store it in a variable
-	prompt_pure_check_cmd_exec_time
 	unset prompt_pure_cmd_timestamp
 
 	# shows the full path in the title
