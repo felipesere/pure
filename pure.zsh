@@ -354,19 +354,21 @@ prompt_pure_async_callback() {
 			if (( code == 0 )); then
 				unset prompt_pure_git_dirty
 			else
-        local -a prompt_git_status_icons
-        if git status --porcelain | egrep '^(M|D|A|T)' &> /dev/null; then
-          # Add the yellow mark
-          prompt_git_status_icons+=("%{%{$fg[yellow]%}●%{$reset_color%}")
+        if [ -d .git ]; then
+          local -a prompt_git_status_icons
+          if git status --porcelain | egrep '^(M|D|A|T)' &> /dev/null; then
+            # Add the yellow mark
+            prompt_git_status_icons+=("%{%{$fg[yellow]%}●%{$reset_color%}")
+          fi
+          if git status --porcelain | grep '??' &> /dev/null ; then
+            # Add the blue mark
+            prompt_git_status_icons+=("%{%{$fg[blue]%}●%{$reset_color%}")
+          fi
+          if git status --porcelain | egrep '^\s(M|D|A|T)' &> /dev/null; then
+            prompt_git_status_icons+=("%{%{$fg[green]%}●%{$reset_color%}")
+          fi
+				  typeset -g prompt_pure_git_dirty=${(j..)prompt_git_status_icons}
         fi
-        if git status --porcelain | grep '??' &> /dev/null ; then
-          # Add the blue mark
-          prompt_git_status_icons+=("%{%{$fg[blue]%}●%{$reset_color%}")
-        fi
-        if git status --porcelain | egrep '^\s(M|D|A|T)' &> /dev/null; then
-          prompt_git_status_icons+=("%{%{$fg[green]%}●%{$reset_color%}")
-        fi
-				typeset -g prompt_pure_git_dirty=${(j..)prompt_git_status_icons}
 			fi
 
 			[[ $prev_dirty != $prompt_pure_git_dirty ]] && do_render=1
